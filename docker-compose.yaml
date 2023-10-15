@@ -1,0 +1,17 @@
+version: "3.8"
+
+volumes:
+  db-data:
+
+services:
+  database:
+    container_name: "uuid-poc"
+    image: "postgres:15.3-alpine"
+    labels:
+      com.symfony.server.service-prefix: 'DATABASE'
+    environment:
+      POSTGRES_USER: uuid-poc
+      POSTGRES_PASSWORD: uuid-poc-password
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+    ports: ["5432:5432"]

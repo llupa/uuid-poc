@@ -1,0 +1,29 @@
+name: Do not use UuidBinary with Posgre
+on: [push]
+jobs:
+  the-job:
+    name: I am a job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          coverage: "none"
+      - name: Setup Posgre
+        uses: ikalnytskyi/action-setup-postgres@v4
+        with:
+          username: uuid-poc
+          password: uuid-poc-password
+          database: app
+          port: 5432
+      - name: Install dependencies
+        run: composer install --ansi
+      - name: Proof maybe?
+        run: |
+          bin/console doctrine:database:create --if-not-exists --ansi
+          bin/console doctrine:schema:create --ansi
+          bin/console prep --ansi
+          bin/console does-it-work --ansi
